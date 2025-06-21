@@ -1,0 +1,12 @@
+resource "aws_instance" "Senthil" {
+  ami           = "ami-0b09627181c8d5778" # Example AMI ID, replace with a valid one
+  instance_type = "t2.micro"
+  key_name = "Sen-South"
+  security_groups = [ "SEN-SG" ]
+  availability_zone = "ap-south-1b" # Replace with your desired availability zone
+
+  tags = {
+    Name = "Sen-Web1"
+    Environment = "prod"
+  }
+}
