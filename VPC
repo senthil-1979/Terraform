@@ -1,0 +1,43 @@
+resource "aws_vpc" "myvpc" {
+  cidr_block       = "10.0.0.0/16"
+  instance_tenancy = "default"
+
+  tags = {
+    Name = "senvpc"
+  }
+}
+
+resource "aws_subnet" "mysubnet" {
+  vpc_id     = aws_vpc.myvpc.id
+  cidr_block = "10.0.1.0/24"
+  map_public_ip_on_launch=true
+  tags = {
+    Name = "Public-Subnet"
+  }
+}
+
+resource "aws_internet_gateway" "MyIGW" {
+  vpc_id = aws_vpc.myvpc.id
+
+  tags = {
+    Name = "InternetGW"
+  }
+}
+
+resource "aws_route_table" "Myrt" {
+  vpc_id = aws_vpc.myvpc.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.MyIGW.id
+  }
+
+  tags = {
+    Name = "route_table"
+  }
+}
+
+resource "aws_route_table_association" "MyRTA" {
+  subnet_id      = aws_subnet.mysubnet.id
+  route_table_id = aws_route_table.Myrt.id
+}
