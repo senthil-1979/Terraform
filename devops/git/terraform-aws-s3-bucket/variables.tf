@@ -1,3 +1,4 @@
-output "bucket_name" {
-  value = aws_s3_bucket.this.bucket
+variable "bucket_name" {
+  description = "Name of the S3 bucket"
+  type        = string
 }
